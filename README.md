@@ -1,0 +1,1 @@
+This repository includes all the projects and challenges for the freecodecamp.org
