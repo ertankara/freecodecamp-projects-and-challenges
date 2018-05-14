@@ -4,6 +4,15 @@
     _secondaryOperand: null,
     _operator: null,
     _strFormat: '',
+    _actionPerformed: false,
+
+    get actionPerformed() {
+      return this._actionPerformed;
+    },
+
+    set actionPerformed(bool) {
+      this._actionPerformed = bool;
+    },
 
     set mainOperand(operand) {
       this._mainOperand = operand;
@@ -43,33 +52,37 @@
 
     operateOn() {
       const
-        first = this.mainOperand,
-        second = this.secondaryOperand,
+        first = Number.parseFloat(this.mainOperand),
+        second = Number.parseFloat(this.secondaryOperand),
         opt = this.operator;
 
       let result;
       switch (opt) {
         case 'add': {
-          result = this.mainOperand + this.secondaryOperand;
+          result = first +second;
           break;
         }
         case 'substract': {
-          result = this.mainOperand - this.secondaryOperand;
+          result = first - second;
           break;
         }
         case 'divide': {
           if (this.secondaryOperand === 0)
             throw new Error('Numbers can\'t be divided 0');
 
-          result = this.mainOperand / this.secondaryOperand;
+          result = first / second;
           break;
         }
         case 'multiply': {
-          result = this.mainOperand * this.secondaryOperand;
+          result = first * second;
           break;
+        }
+        case 'percentage': {
+          result = first / 100;
         }
       }
 
+      this.actionPerformed = true;
       return result;
     }
   };
@@ -79,18 +92,26 @@
   const controller = {
     init() {
       numPadView.init();
+      operatorView.init();
     },
 
     setMainOperand(operand) {
-      model.mainOperand = operand;
+      model.mainOperand = Number.parseFloat(operand);
     },
 
     setSecondaryOperand(operand) {
-      model.secondaryOperand = operand;
+      model.secondaryOperand = Number.parseFloat(operand);
     },
 
     setOperator(opt) {
+      if (opt === 'percentage') {
+        this.doMath(true);
+      }
       model.operator = opt;
+      this.setMainOperand(this.getStringFormat());
+      // Clear the string to select fresh second operand
+      this.clearString();
+      // }
     },
 
     getOperator() {
@@ -135,6 +156,7 @@
 
     clearString() {
       model.clearStrFormat();
+      model.actionPerformed = false
       numPadView.render();
     },
 
@@ -142,7 +164,26 @@
       const str = controller.getStringFormat();
       controller.storeAsStringFormat(-Number.parseFloat(str), true);
       numPadView.render();
+    },
+
+    doMath(now) {
+      let result;
+      if (now) {
+        result = model.operateOn();
+        numPadView.render(result);
+      }
+      else if (model.mainOperand) {
+        model.secondaryOperand = this.getStringFormat();
+        result = model.operateOn();
+        numPadView.render(result);
+      }
+    },
+
+    calculationDone() {
+      return model.actionPerformed;
     }
+
+
   };
 
 
@@ -155,39 +196,86 @@
       numPad.addEventListener('click', e => {
         const selectedCharacter = e.target.textContent;
 
-        // Notice these are not keyboard interpreted plus and minus
-        // TODO: Implement this!
-        if (selectedCharacter === '+/−') {
-          controller.changeSign();
-          return;
+        switch (selectedCharacter) {
+          case '+/−': {
+            controller.changeSign();
+            return;
+          }
+          case 'AC': {
+            controller.setMainOperand(null);
+            controller.setSecondaryOperand(null);
+            controller.setOperator(null);
+            controller.clearString();
+            controller.clearString();
+            return;
+          }
+          case '%': {
+            controller.setOperator('percentage');
+            return;
+          }
         }
 
-        // If AC is clicked
-        if (selectedCharacter === 'AC') {
-          controller.clearString();
-          return;
-        }
-
+        // If it comes this far it means it might be a number
         // If it's not a number stop function execution for the rest
         if (Number.isNaN(Number(selectedCharacter))) {
           return;
         }
 
+        if (controller.calculationDone()) {
+          controller.clearString();
+        }
+
         controller.storeAsStringFormat(selectedCharacter);
-
-
         this.render();
       });
     },
 
-    render() {
+    render(result) {
+      if (result) {
+        this.outputArea.textContent = result;
+        return;
+      }
+
       const data = controller.getStringFormat() || '0';
       this.outputArea.textContent = data;
     }
   };
 
   const operatorView = {
+    init() {
+      const operatorPad = document.querySelector('.operators');
 
+      operatorPad.addEventListener('click', e => {
+        const optType = e.target.textContent;
+
+        switch (optType) {
+          case '÷': {
+            try {
+              controller.setOperator('divide');
+            } catch (e) {
+              alert('You should\'t be dividing numbers with 0!');
+            }
+            return;
+          }
+          case '⨯': {
+            controller.setOperator('multiply');
+            return;
+          }
+          case '−': {
+            controller.setOperator('substract');
+            return;
+          }
+          case '+': {
+            controller.setOperator('add');
+            return;
+          }
+          case '=': {
+            controller.doMath();
+            return;
+          }
+        }
+      });
+    }
   };
 
   controller.init();
