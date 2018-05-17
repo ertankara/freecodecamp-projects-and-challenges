@@ -89,14 +89,22 @@
         return 1;
       }
 
-      this.resetOperands();
-      outputView.render(result);
+      // this.resetOperands();
+      outputView.render(Number.isInteger(result) ? result : result.toFixed(2));
+      model.mainOperand = result;
+      model.secondaryOperand = null;
       outputView.clearText();
+      console.log(model.mainOperand, model.secondaryOperand);
       return 0;
     },
     // ==== OPERATEON END ====
 
     setOperator(operator) {
+      if (model.mainOperand && model.secondaryOperand) {
+        this.operateOn();
+        model.operator = operator;
+        return;
+      }
       if (model.mainOperand !== null) {
         model.operator = operator;
       }
@@ -236,33 +244,28 @@
   const appView = {
     init() {
       this.operatorPad = document.querySelector('.operators');
-      this.optType;
       this.operatorPad.addEventListener('click', e => {
         e.preventDefault();
         const opt = e.target.textContent;
+        control.setOperand();
         switch (opt) {
           case '÷': {
-            control.setOperand();
             control.setOperator('divide');
             break;
           }
           case '⨯': {
-            control.setOperand();
             control.setOperator('multiply');
             break;
           }
           case '−': {
-            control.setOperand();
             control.setOperator('substract');
             break;
           }
           case '+': {
-            control.setOperand();
             control.setOperator('add');
             break;
           }
           case '=': {
-            control.setOperand();
             control.operateOn();
             break;
           }
