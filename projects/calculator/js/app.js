@@ -31,63 +31,146 @@
 
 
   const control = {
-    onStart:false,
+    strFormat: '',
 
     init() {
       outputView.init();
       appView.init();
     },
 
+    // ==== OPERATEON BEGIN ====
     operateOn(opt) {
       const first = model.mainOperand;
       const second = model.secondaryOperand;
       const operator = model.operator;
-
-      if (!first || !second || !this.operateOn) {
+      console.log('first: ', first,'second: ', second,'third: ', operator);
+      if ((first) || !second && !operator) {
+        outputView.render(first || '0');
+        this.resetOperands();
+        this.strFormat = '';
+        outputView.clearText();
+      }
+      if (first == undefined || second == undefined || operator == undefined) {
         return;
       }
 
+      let result;
 
-      const result = first
 
+      try {
+        switch (operator) {
+          case 'add': {
+            result = first + second;
+            break;
+          }
+          case 'substract': {
+            result = first - second;
+            break;
+          }
+          case 'divide': {
+            if (second === 0) {
+              throw new Error('Error!');
+            }
+            result = first / second;
+            break;
+          }
+          case 'multiply': {
+            result = first * second;
+            break;
+          }
+        }
+        if (result > 999999999)
+          throw new Error('Too big!');
+      } catch(e) {
+        outputView.render(e.message);
+        this.resetOperands();
+        this.strFormat = '';
+        outputView.clearText();
+        return 1;
+      }
+
+      this.resetOperands();
+      outputView.render(result);
+      outputView.clearText();
+      return 0;
+    },
+    // ==== OPERATEON END ====
+
+    setOperator(operator) {
+      if (model.mainOperand !== null) {
+        model.operator = operator;
+      }
     },
 
-    getOperator() {
-      const first = model.mainOperand;
-      if (!first) {
+    setOperand() {
+      if (model.mainOperand !== null && this.numberFormat()) {
+        model.secondaryOperand = this.numberFormat();
+        this.strFormat = '';
         return;
       }
 
-      model.operator = '';
+      if (this.numberFormat()) {
+        model.mainOperand = this.numberFormat();
+        outputView.render('0');
+        this.strFormat = '';
+        outputView.clearText();
+      }
     },
 
-    getNumber(num) {
-      // If first operand is set, then set the second one
-      if (model.mainOperand) {
-        model.secondaryOperand = num;
+    percentify() {
+      const num = this.numberFormat();
+      if (!num)
         return;
-      }
-      model.mainOperand = num;
+      outputView.render(num / 100);
+      this.resetOperands();
+      this.strFormat = '';
+    },
+
+    changeSign() {
+      const num = this.numberFormat();
+      if (num === null || Number.isNaN(num))
+        return;
+      outputView.render(-num);
+      this.strFormat = String(-this.numberFormat());
+      // this.resetOperands();
+      // this.strFormat = '';
     },
 
     clear() {
-      this.mainOperand = null;
-      this.result = null;
+      this.resetOperands();
       outputView.render('0');
     },
 
-    updateOutputView(x) {
-      outputView.render(x);
+    resetOperands() {
+      model.mainOperand = null;
+      model.secondaryOperand = null;
+      model.operator = null;
+    },
+
+    stringFormat(str) {
+      if (str.indexOf(',') !== -1) {
+        str = str.replace(/,/g, '.');
+      }
+      this.strFormat = str;
+    },
+
+    numberFormat() {
+      return Number.parseFloat(this.strFormat);
     }
   };
 
   const outputView = {
+    clearText() {
+      this.currentText = '';
+    },
+
     init() {
       this.currentText = '';
       this.outputArea = document.querySelector('#output');
       this.numPad = document.querySelector('.numpad');
 
       this.numPad.addEventListener('click', e => {
+        e.preventDefault();
         const clickedButtonContent = e.target.textContent;
 
         switch (clickedButtonContent) {
@@ -102,6 +185,13 @@
           }
           case '%': {
             control.percentify();
+            break;
+          }
+          case ',': {
+            if (this.currentText.indexOf(',') === -1) {
+              this.currentText = this.currentText + ',';
+              this.render();
+            }
             break;
           }
         }
@@ -121,20 +211,24 @@
         }
 
         this.currentText = clickedButtonContent;
-        this.render(clickedButtonContent);
+        this.render();
       });
     },
 
     render(content) {
+      //this.outputArea.textContent = '';
       // This should happen through `control`so no new data will be
       // introduced so it's safe to not to call 'getNumber'
       // method here
-      if (content) {
+      if (content !== undefined) {
+        if (String(content).indexOf('.') !== -1) {
+          content = String(content).replace(/\./g, ',');
+        }
         this.outputArea.textContent = content;
         return;
       }
       this.outputArea.textContent = this.currentText;
-      control.getNumber();
+      control.stringFormat(this.currentText);
     }
   };
 
@@ -144,36 +238,37 @@
       this.operatorPad = document.querySelector('.operators');
       this.optType;
       this.operatorPad.addEventListener('click', e => {
-        console.log('dead in the sea');
+        e.preventDefault();
         const opt = e.target.textContent;
         switch (opt) {
           case '÷': {
-            this.optType = 'divide';
+            control.setOperand();
+            control.setOperator('divide');
             break;
           }
           case '⨯': {
-            this.optType = 'multiply';
+            control.setOperand();
+            control.setOperator('multiply');
             break;
           }
           case '−': {
-            this.optType = 'substract';
+            control.setOperand();
+            control.setOperator('substract');
             break;
           }
           case '+': {
-            this.optType = 'add';
+            control.setOperand();
+            control.setOperator('add');
             break;
           }
           case '=': {
+            control.setOperand();
             control.operateOn();
             break;
           }
         }
       });
     },
-
-    render() {
-      control.operateOn(this.optType);
-    }
   }
 
   control.init();
