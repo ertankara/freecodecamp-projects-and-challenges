@@ -33,7 +33,9 @@ const main = function () {
 			randomIndex = Math.floor(Math.random() * quoteArray.length),
 			randomQuote = quoteArray.splice(randomIndex, 1)[0];
 
+
 		// Set current quote to tweet about it
+
 		currentQuote = randomQuote;
 
 		$('#quote')
