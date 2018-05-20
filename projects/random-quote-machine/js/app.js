@@ -3,6 +3,8 @@ const main = function () {
 		quoteArray = [],
 		imgArray = [];
 
+	let currentQuote;
+
 
 	const handleImage = function imageHandler(response) {
 		const pics = response.photos;
@@ -30,6 +32,9 @@ const main = function () {
 		const
 			randomIndex = Math.floor(Math.random() * quoteArray.length),
 			randomQuote = quoteArray.splice(randomIndex, 1)[0];
+
+		// Set current quote to tweet with it
+		currentQuote = randomQuote;
 
 		$('#quote')
 			.text(randomQuote.quote);
@@ -60,6 +65,16 @@ const main = function () {
 			.text(randomPic.attr)
 			.attr('href', 'https://unsplash.com/' + attribute);
 	};
+
+
+	$('#tweet-button').click(function() {
+		let tweetTemplate =
+			`https://twitter.com/intent/tweet?text=${currentQuote.quote}%20--%20%20${currentQuote.author}`;
+
+		$(this).attr('href', tweetTemplate);
+
+
+	});
 
 
 	$('#get-quote-button').click(function() {
