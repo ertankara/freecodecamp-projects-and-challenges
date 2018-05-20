@@ -8,7 +8,7 @@
 }
 
 
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 800px) {
 	.quote-text-container > .quote-holder {
 		font-size: 1.3em;
 		top: 8%;

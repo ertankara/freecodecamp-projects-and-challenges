@@ -43,11 +43,22 @@ const main = function () {
 		const randomPic =
 			imgArray[Math.floor(Math.random() * imgArray.length)];
 
+		let
+			photo,
+			attribute = randomPic.attr;
+
+		if (screen.width > 900) {
+			photo = randomPic.large;
+		}
+		else {
+			photo = randomPic.small;
+		}
+
 		$('.quote-area')
-			.css('background-image', 'url(' + randomPic.large + ')');
+			.css('background-image', 'url(' + photo + ')');
 		$('#artist-attributer')
 			.text(randomPic.attr)
-			.attr('href', 'https://unsplash.com/' + randomPic.attr);
+			.attr('href', 'https://unsplash.com/' + attribute);
 	};
 
 
