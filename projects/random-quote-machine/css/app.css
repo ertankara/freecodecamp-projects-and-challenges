@@ -114,11 +114,13 @@ footer {
   margin-left: auto;
   margin-right: auto;
   width: 350px;
-  top: 15%;
+  top: 13%;
+  text-align: center;
 }
 
 
 a {
   color: inherit;
   font-weight: bold;
+  cursor: pointer;
 }
