@@ -1,6 +1,7 @@
 {
   "undef": true,
   "unused": true,
+  "browser": true,
   "devel": true,
   "jquery": true,
   "esversion": 6
