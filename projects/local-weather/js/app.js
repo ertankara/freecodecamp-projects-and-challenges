@@ -99,8 +99,12 @@
 
 
 
-    $('label > input').click(function() {
+    $('label > input').click(function(e) {
       const currentDegree = Number.parseInt($('#degree').text());
+      if (!currentDegree) {
+        e.preventDefault();
+        return;
+      }
       if ($(this).prop('checked') === true) {
         const fahr = Math.round((9 / 5) * currentDegree + 32);
         $('#degree')
