@@ -16,7 +16,7 @@
 }
 
 
-@media screen and (min-width: 700px) {
+@media screen and (min-width: 500px) {
   body > main {
     position: relative;
     top: 5%;
@@ -78,7 +78,7 @@ main {
 
 
 .list-item {
-  color: red;
+  color: #444;
   text-transform: uppercase;
   list-style: none;
   font-size: 1.3em;
@@ -88,7 +88,7 @@ main {
 
 
 .convert-celsius {
-  position: fixed;
+  position: absolute;
   top: 10px;
   right: 10px;
   font-size: 1.1em;
