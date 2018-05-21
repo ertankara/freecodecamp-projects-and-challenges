@@ -16,6 +16,7 @@ const main = function() {
   };
 
 
+
   const makeRequest = function _makeRequest(response) {
     const editedURL =
       `https://fcc-weather-api.glitch.me/api/current?lat=${response.coords.latitude}&lon=${response.coords.longitude}`;
@@ -32,9 +33,11 @@ const main = function() {
   };
 
 
+
   const handleData = function _handleData(response) {
     console.log(response);
 
+    const degree = Number.parseInt(response.main.temp);
     let windDirection;
 
     if (response.wind.deg < 90) {
@@ -50,9 +53,12 @@ const main = function() {
       windDirection = 'North West';
     }
 
-
     $('.country')
       .text(response.sys.country);
+
+    $('#degree')
+      .text(degree + '℃');
+
 
     $('.city')
       .text(response.name);
@@ -65,17 +71,21 @@ const main = function() {
         '<li class="list-item">' +
           response.weather[0].description +'</li>',
 
-        '<li class="list-item">Temperature: ' +
-          response.main.temp + '</li>',
-
         '<li class="list-item">Pressure: ' +
-          response.main.pressure + 'hPA</li>',
+          response.main.pressure + ' hPA</li>',
 
         '<li class="list-item">Wind: '  +
           windDirection + ' / ' +
-          response.wind.speed + 'kph</li>'
+          response.wind.speed + ' kph</li>',
+
+        '<li class="list-item">Humidity: ' +
+          response.main.humidity +'%</li>',
+
+        '<li class="list-item">Visibility: ' +
+          response.visibility +  '</li>'
       );
   };
+
 
 
   const getWeatherInfo = function _getWeatherInfo() {
@@ -87,8 +97,29 @@ const main = function() {
     });
   };
 
+
+
+  $('label > input').click(function() {
+    const currentDegree = Number.parseInt($('#degree').text());
+    if ($(this).prop('checked') === true) {
+      const fahr = Math.round((9 / 5) * currentDegree + 32);
+      $('#degree')
+        .text(fahr + '℉');
+    }
+    else {
+      const celsius = Math.round((currentDegree - 32) * (5 / 9));
+      $('#degree')
+        .text(celsius + '℃');
+    }
+    console.log(currentDegree);
+  });
+
+
   // Get data on start
   getWeatherInfo();
+
+  // Make sure the checkbox is unchecked at the start
+  $('input').prop('checked', false);
 };
 
 $(document).ready(main);
