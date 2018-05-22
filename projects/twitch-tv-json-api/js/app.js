@@ -52,6 +52,30 @@
       });
     };
 
+
+    // Thanks to eloquentjavascript.net for this event
+    let timeout;
+    $('#search-channel').on('input', function() {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        $('.channel').css('display', 'block');
+        const reg = new RegExp($(this).val().toLowerCase());
+        const channels = $('.channel');
+
+        for (const channel of channels) {
+          if (!reg.test(channel.textContent.toLowerCase())) {
+            channel.style.display = 'none';
+          }
+        }
+
+        if ($(this).val() === '') {
+          $('.channel').css('display', 'block');
+        }
+      }, 400);
+
+    });
+
+
     handleData();
   };
 
