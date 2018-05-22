@@ -63,7 +63,7 @@
         const channels = $('.channel');
 
         for (const channel of channels) {
-          if (!reg.test(channel.textContent.toLowerCase())) {
+          if (!reg.test(channel.querySelector('a').textContent.toLowerCase())) {
             channel.style.display = 'none';
           }
         }
