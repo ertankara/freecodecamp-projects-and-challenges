@@ -40,7 +40,10 @@
             statusLight.css('background-color', 'green');
             channelLink.text(obj.stream.display_name);
             status.text('online');
-            currentSubject.text(obj.stream.status.length > 65 ? truncateString(obj.stream.status) : '');
+            currentSubject.text(
+              obj.stream.status.length > 65 ?
+              truncateString(obj.stream.status) :
+              obj.stream.status);
           }
           else {
             img.prop('src', obj.profile_banner);
