@@ -9,6 +9,7 @@
 
   main > .settings-modal {
     min-height: 700px;
+    font-size: 1.4em;
   }
 }
 
