@@ -28,7 +28,7 @@ html * {
 main {
   min-height: 100vh;
   border:1px solid black;
-  background-color: rgb(197, 97, 97);
+  background-color: rgb(202, 143, 143);
   max-width: 700px;
   /* padding: 20px; */
 }
@@ -87,7 +87,7 @@ main {
   margin-right: auto;
   width: 250px;
   height: 250px;
-  border: 1px solid #ccc;
+  border: 3px solid #ccc;
   border-radius: 100%;
   overflow: hidden;
 }
@@ -113,7 +113,10 @@ main {
 
 .timer-button {
   position: relative;
-  top: 250px;
+  top: 170px;
   left: -50%;
   padding: 30px;
+  background-color: rgb(89, 218, 190);
+  border: none;
+  font-size: 1.2em;
 }
