@@ -25,7 +25,6 @@
 
     renderView() {
       const data = JSON.parse(localStorage.pomodoro);
-      console.log(data);
       $('.time').text(data.pomodoroLength + ':' + '00');
     }
   };
@@ -73,28 +72,58 @@
     });
 
 
-    let interval;
+    let interval,
+        totalPomodoros = 1;
 
-    $('.timer-button').click(function() {
-      if ($(this).text() === 'Reset') {
+    function startBreak() {
+      const data = JSON.parse(localStorage.pomodoro);
+      $('.time').text(data.breakLength);
+      if (totalPomodoros == data.longBreakAfter) {
+        timeEventHandler('long-break');
+        totalPomodoros = 1;
+      } else {
+        timeEventHandler('short-break');
+      }
+      totalPomodoros++;
+    }
+
+
+    $('.timer-start-button').click(() => {
+      timeEventHandler('pomodoro');
+    });
+
+
+    function timeEventHandler(timerType) {
+      console.log(timerType);
+      if (!timerType && $('.timer-start-button').text() === 'Reset') {
         clearInterval(interval);
         const data = JSON.parse(localStorage.pomodoro);
         $('.time').text(data.pomodoroLength + ':' + '00');
         $('.fill').css('height', '0%');
-        $('.timer-button').text('Start Timer');
+        $('.timer-start-button').text('Start Session');
         return;
       }
 
-      const seconds = Number.parseInt($('.time').text()) * 60,
-            delta = 1,
+      const data = JSON.parse(localStorage.pomodoro);
+      let seconds;
+
+      if (timerType === 'pomodoro') {
+        seconds = data.pomodoroLength * 60;
+      }
+      else if (timerType === 'short-break') {
+        seconds = data.breakLength * 60;
+      }
+      else if (timerType === 'long-break') {
+        seconds = data.longBreakLength * 60;
+      }
+      const delta = 1,
             increaseAmount = Number.parseFloat(delta * 100 / seconds);
 
       if (seconds === 0) {
-        console.log('entered');
         return;
       }
 
-      $('.timer-button').text('Reset');
+      $('.timer-start-button').text('Reset');
 
       let currentProgress = increaseAmount,
           counter = 0;
@@ -103,6 +132,13 @@
         counter += delta;
         if (counter >= seconds) {
           clearInterval(interval);
+          if (timerType === 'short-break' || timerType === 'long-break') {
+            timeEventHandler('pomodoro');
+          }
+          else {
+            startBreak();
+          }
+
         }
 
         let printableTime = formatTime(seconds - counter);
@@ -112,7 +148,7 @@
         currentProgress += increaseAmount;
         $('.fill').css('height', currentProgress + '%');
       }, delta * 1000);
-    });
+    }
 
     // Update preference
     $('#save-button').click(function() {
@@ -123,7 +159,8 @@
         longBreakAfter: $('#until-long-break').text()
       };
       localStorage.pomodoro = JSON.stringify(newData);
-      model.renderView();
+      if (!interval)
+        model.renderView();
     });
 
 
@@ -161,7 +198,7 @@
 
 
     $('#decrease-until').click(function() {
-      changeData($('#until-long-break'), 'decrase');
+      changeData($('#until-long-break'), 'decrease');
     });
 
 
@@ -174,6 +211,7 @@
     // Initilize data
     model.init();
     model.renderData();
+    model.renderView();
   };
 
 
