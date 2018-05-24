@@ -6,6 +6,10 @@
     margin-left: auto;
     min-height: 700px;
   }
+
+  main > .settings-modal {
+    min-height: 700px;
+  }
 }
 
 
@@ -25,6 +29,11 @@ html * {
 }
 
 
+body {
+  background-color: #dffdfe;
+}
+
+
 main {
   min-height: 100vh;
   border:1px solid black;
@@ -39,7 +48,7 @@ main {
   display: none;
   position: absolute;
   z-index: 10;
-  height:100vh;
+  min-height: 100vh;
   width:100vw;
   max-width: 700px;
   max-height: 700px;
@@ -51,22 +60,40 @@ main {
 
 
 .settings-content {
-  font-size: 1.44em;
+  font-size: 1.05em;
   line-height: 4.50em;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+
+.label {
+  width: 60%;
+}
+
+
+.settings {
+  width: 40%;
+}
+
+
+.settings > span {
+  padding: 10px;
+  width: 50%;
 }
 
 
 .settings-content > button {
   display: block;
+  position: relative;
+  top: 50px;
   margin-left: auto;
   margin-right: auto;
-  padding: 40px;
+  padding: 20px;
+  cursor: pointer;
 }
 
 
-.settings {
-  float: right;
-}
 
 /* MODAL END */
 
@@ -75,6 +102,7 @@ main {
   font-size: 4.5em;
   float: right;
   padding: 30px;
+  cursor: pointer;
 }
 
 
