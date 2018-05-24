@@ -1,0 +1,60 @@
+*, *::after, *::before {
+  box-sizing: border-box;
+}
+
+
+* {
+  padding: 0;
+  margin: 0;
+}
+
+
+html * {
+  font-family: 'monospace', sans-serif;
+}
+
+
+main {
+  min-height: 100vh;
+  border:1px solid black;
+  /* padding: 20px; */
+}
+
+/* MODAL BEGIN */
+
+.settings-modal {
+  display: none;
+  position: fixed;
+  height:100vh;
+  width:100vw;
+  top: 0;
+  left: 0;
+  background-color: #ccc;
+  padding: 20px;
+}
+
+.settings-content {
+  font-size: 1.44em;
+  line-height: 4.50em;
+}
+
+
+.settings-content > button {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 40px;
+}
+
+.settings {
+  float: right;
+}
+
+/* MODAL END */
+
+
+.gear {
+  font-size: 4.5em;
+  float: right;
+  padding: 30px;
+}
