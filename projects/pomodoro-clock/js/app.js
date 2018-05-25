@@ -145,7 +145,8 @@
           else {
             startBreak();
           }
-
+          const bell = new Audio('audio/bell.mp3');
+          bell.play();
         }
 
         let printableTime = formatTime(seconds - counter);
