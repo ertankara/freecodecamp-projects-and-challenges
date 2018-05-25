@@ -90,18 +90,15 @@
 
     $('.timer-start-button').click(function() {
       if ($(this).text() !== 'Reset') {
-        console.log('pomodoro');
         timeEventHandler('pomodoro');
       }
       else {
-        console.log('actual reset');
         timeEventHandler();
       }
     });
 
 
     function timeEventHandler(timerType) {
-      console.log('timer type: ', timerType);
       if (!timerType && $('.timer-start-button').text() === 'Reset') {
         clearInterval(interval);
         const data = JSON.parse(localStorage.pomodoro);
@@ -145,8 +142,8 @@
           else {
             startBreak();
           }
-          const bell = new Audio('audio/bell.mp3');
-          bell.play();
+
+          new Audio('audio/bell.mp3').play();
         }
 
         let printableTime = formatTime(seconds - counter);
