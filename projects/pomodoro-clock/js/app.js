@@ -130,11 +130,13 @@
       $('.timer-start-button').text('Reset');
 
       let currentProgress = increaseAmount,
-          counter = 0;
+          startingTime = Date.now(),
+          endingTime = startingTime + (seconds * 1000),
+          timeLeft;
 
       interval = setInterval(() => {
-        counter += delta;
-        if (counter >= seconds) {
+        timeLeft = endingTime - Date.now();
+        if (timeLeft < 0) {
           clearInterval(interval);
           if (timerType === 'short-break' || timerType === 'long-break') {
             timeEventHandler('pomodoro');
@@ -145,9 +147,8 @@
 
           new Audio('audio/bell.mp3').play();
         }
-
-        let printableTime = formatTime(seconds - counter);
-
+        let printableTime = formatTime(Math.round(timeLeft / 1000));
+        console.log(printableTime);
         $('.time').text(printableTime.minutes + ':' + printableTime.seconds);
 
         currentProgress += increaseAmount;
