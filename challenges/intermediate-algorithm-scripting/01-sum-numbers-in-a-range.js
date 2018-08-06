@@ -4,15 +4,13 @@
  */
 
 function sumAll(arr) {
-  const max = Math.max(...arr),
-    min = Math.min(...arr);
+  let total = 0;
 
-  let result = 0;
-  for (let i = min; i <= max; i++) {
-    result += i;
+  for (let i = Math.min(...arr); i <= Math.max(...arr); i++) {
+    total += i;
   }
 
-  return result;
+  return total;
 }
 
 console.log(sumAll([1, 4]));
