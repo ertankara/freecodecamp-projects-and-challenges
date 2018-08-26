@@ -8,7 +8,6 @@ String.prototype.reverse = function() {
 
 function palindrome(str) {
   const rawString = str.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
-  console.log(rawString, rawString.reverse());
 
   if (rawString === rawString.reverse()) {
     return true;

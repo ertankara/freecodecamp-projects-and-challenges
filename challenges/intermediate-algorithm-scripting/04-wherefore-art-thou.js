@@ -6,27 +6,27 @@
  */
 
 function whatIsInAName(collection, source) {
-  const sourceKeys = Object.keys(source);
-  const validObjects = collection.filter(obj => {
-    let bool;
-    for (let i = 0; i < sourceKeys.length; i++) {
-      bool = true;
-      if (
-        !(Object.keys(obj).includes(sourceKeys[i]) &&
-          obj[sourceKeys[i]] === source[sourceKeys[i]])
-      ) {
+  const keys = Object.keys(source),
+        result = [];
+  let bool;
+  for (const obj of collection) {
+    bool = true;
+    const keysOfObj = Object.keys(obj);
+    // First make sure all the keys are present in the object
+    for (const key of keys) {
+      if (!keysOfObj.includes(key) || source[key] !== obj[key]) {
         bool = false;
+        break;
       }
     }
 
-    if (bool)
-      return obj;
-  });
 
-  return validObjects;
+    if (bool) {
+      result.push(obj);
+    }
+  }
+
+  return result;
 }
-
-// [ { "a": 1, "b": 2 }, { "a": 1, "b": 2, "c": 2 } ]
-console.log(whatIsInAName([{ "a": 1, "b": 2 }, { "a": 1 }, { "a": 1, "b": 2, "c": 2 }], { "a": 1, "b": 2 }));
-// [{ "a": 1, "b": 2, "c": 2 }]
-console.log(whatIsInAName([{ "a": 1, "b": 2 }, { "a": 1 }, { "a": 1, "b": 2, "c": 2 }], { "a": 1, "c": 2 }));
+console.log(whatIsInAName([{ first: "Romeo", last: "Montague" }, { first: "Mercutio", last: null }, { first: "Tybalt", last: "Capulet" }], { last: "Capulet" }));
+//console.log(whatIsInAName([{"a": 1, "b": 2, "c": 3}], {"a": 1, "b": 9999, "c": 3}));
