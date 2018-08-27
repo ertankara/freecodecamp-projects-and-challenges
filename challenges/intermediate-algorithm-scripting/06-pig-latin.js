@@ -10,15 +10,29 @@
 function translatePigLatin(str) {
   const vowels = 'aeiou'.split('');
 
-  if (vowels.includes(str[0]))
+  if (vowels.includes(str[0])) {
     return str + 'way';
+  }
 
-  const eachLetter = str.split('');
-  const firstLetter = eachLetter.splice(0, 1)[0];
-  eachLetter.push(firstLetter, 'ay');
+  const letters = str.split(''),
+        copyArray = [...letters],
+        resultArray = [];
 
-  return eachLetter.join('');
+  // glove -> oveglay
+
+  for (let i = 0; i < letters.length; i++) {
+    if (!vowels.includes(letters[i])) {
+      resultArray.push(copyArray.shift());
+    }
+    else {
+      break;
+    }
+  }
+
+  console.log('current state: ', resultArray);
+  console.log('the copy array: ', copyArray);
+
+  return (copyArray.concat(resultArray)).join('') + 'ay';
 }
 
-//console.log(translatePigLatin('consonant'));
 console.log(translatePigLatin("glove"));

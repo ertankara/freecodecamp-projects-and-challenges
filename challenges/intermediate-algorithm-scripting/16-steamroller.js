@@ -8,4 +8,5 @@ function steamrollArray(arr) {
 }
 
 
-// console.log(steamrollArray([[1],[2]]));
+console.log(steamrollArray([[1],[2]]));
+console.log(steamrollArray([1, [2], [3, [[4]]]]));
