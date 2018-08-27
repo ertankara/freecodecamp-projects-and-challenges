@@ -6,26 +6,29 @@
  */
 
 function smallestCommons(arr) {
-  const
-    max = Math.max(...arr),
-    min = Math.min(...arr);
+  const small = Math.min(...arr),
+        big = Math.max(...arr);
 
-  let isDivisible;
+  if (small === 0 || big === 0) throw new Error('Dividing with 0 creates black holes');
+
+  let bool;
+
   for (let i = 1; true; i++) {
-    isDivisible = true;
-    for (let j = min; j <= max; j++) {
+    bool = true;
+    for (let j = small; j <= big; j++) {
       if (i % j !== 0) {
-        isDivisible = false;
+        bool = false;
         break;
       }
     }
-  if (isDivisible)
-    return i.toString();
+
+    if (bool) {
+      return i;
+    }
   }
 }
 
-//console.log(smallestCommons([1,5]));
+
+
 console.log(smallestCommons([1, 13]));
 console.log(smallestCommons([23, 18]));
-
-console.log(smallestCommons([23, 18]) === 6056820);
