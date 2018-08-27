@@ -11,11 +11,13 @@ function smallestCommons(arr) {
 
   if (small === 0 || big === 0) throw new Error('Dividing with 0 creates black holes');
 
-  let bool;
+  let bool,
+      calc = big * small;
 
-  for (let i = 1; true; i++) {
+  for (let i = calc; true; i += calc) {
     bool = true;
-    for (let j = small; j <= big; j++) {
+
+    for (let j = big; j >= small; j--) {
       if (i % j !== 0) {
         bool = false;
         break;
