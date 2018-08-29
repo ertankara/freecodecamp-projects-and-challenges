@@ -12,9 +12,9 @@ function smallestCommons(arr) {
   if (small === 0 || big === 0) throw new Error('Dividing with 0 creates black holes');
 
   let bool,
-      calc = big * small;
+      increaseRate = big * (big - 1);
 
-  for (let i = calc; true; i += calc) {
+  for (let i = increaseRate; true; i += increaseRate) {
     bool = true;
 
     for (let j = big; j >= small; j--) {
