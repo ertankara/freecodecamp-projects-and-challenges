@@ -1,8 +1,0 @@
-{
-  "undef": true,
-  "unused": true,
-  "devel": true,
-  "browser": true,
-  "jquery": true,
-  "esversion": 6
-}
