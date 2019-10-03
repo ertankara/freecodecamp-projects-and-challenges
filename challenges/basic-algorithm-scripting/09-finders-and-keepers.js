@@ -7,12 +7,7 @@
  */
 
 function findElement(arr, func) {
-  for (const element of arr) {
-    if (func(element)) {
-      return element;
-    }
-  }
-  return;
+  return arr.find(func);
 }
 
 findElement([1, 3, 5, 8, 9, 10], function(num) { return num % 2 === 0; });

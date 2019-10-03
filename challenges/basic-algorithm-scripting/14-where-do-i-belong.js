@@ -4,13 +4,14 @@
  */
 
 function getIndexToIns(arr, num) {
-  let index;
-  arr = arr.sort((a, b) => a - b);
-  for (index = 0; index < arr.length; index++) {
-    if (arr[index] >= num)
-      break;
+  const sortedArr = arr.sort((a, b) => a - b);
+  let targetIndex = 0;
+
+  while (sortedArr[targetIndex] < num) {
+    targetIndex++;
   }
-  return index;
+
+  return targetIndex;
 }
 
 console.log(getIndexToIns([40, 60], 50));

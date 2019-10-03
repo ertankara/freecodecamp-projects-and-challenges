@@ -3,14 +3,10 @@
 */
 
 function titleCase(str) {
-  const newArr = [];
-  const words = str.split(' ');
-  for (const word of words) {
-    const eachLetter = word.toLowerCase().split('');
-    eachLetter[0] = eachLetter[0].toUpperCase();
-    newArr.push(eachLetter.join(''));
-  }
-  return newArr.join(' ');
+  return str
+    .split(" ")
+    .map(s => s[0].toUpperCase() + s.slice(1).toLowerCase())
+    .join(" ");
 }
 
 

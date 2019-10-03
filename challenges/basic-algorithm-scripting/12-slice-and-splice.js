@@ -6,12 +6,8 @@
  */
 
 function frankenSplice(arr1, arr2, n) {
-  const tempArray = [...arr1];
-  const resultArray = [...arr2];
-
-  for (let i = n; tempArray.length > 0; i++) {
-    resultArray.splice(i, 0, tempArray.splice(0, 1)[0]);
-  }
-
-  return resultArray;
+  return [...arr2.slice(0, n), ...arr1, ...arr2.slice(n)];
 }
+
+
+console.log(frankenSplice([1, 2, 3], [4, 5], 1)) // should return [4, 1, 2, 3, 5];

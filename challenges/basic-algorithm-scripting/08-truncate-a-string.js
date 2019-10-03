@@ -7,21 +7,32 @@
  */
 
 function truncateString(str, num) {
-  if (str.length <= num) {
-    return str;
+  if (str.length <= num) return str;
+
+  let newStr = "";
+  let letterIndex = 0;
+
+  while (newStr.length < num) {
+    newStr += str[letterIndex];
+    letterIndex ++;
   }
 
-  let result = '';
+  return newStr + "...";
+  // if (str.length <= num) {
+  //   return str;
+  // }
 
-  if (str.length > num && str.length <= 3) {
-    result = str.slice(0, num) + '...';
-  }
-  else if (str.length > num) {
-    let until = num - 3 < 0 ? num : num - 3;
-    result = str.slice(0, until) + '...';
-  }
+  // let result = '';
 
-  return result;
+  // if (str.length > num && str.length <= 3) {
+  //   result = str.slice(0, num) + '...';
+  // }
+  // else if (str.length > num) {
+  //   let until = num - 3 < 0 ? num : num - 3;
+  //   result = str.slice(0, until) + '...';
+  // }
+
+  // return result;
 }
 
 

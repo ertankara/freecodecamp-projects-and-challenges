@@ -11,20 +11,18 @@
  */
 
 function mutation(arr) {
-  const first = arr[0].toLowerCase().split('');
-  const second = arr[1].toLowerCase().split('');
-
-  const maxLengthArray = first.length > second.length ? first : second;
-  const minLengthArray = first.length > second.length ? second : first;
-  for (let i = 0; i < minLengthArray.length; i++) {
-    if (!maxLengthArray.includes(minLengthArray[i]))
-      return false;
-  }
-  return true;
+  return arr[1]
+    .toLowerCase()
+    .split("")
+    .every(letter =>
+        arr[0]
+        .toLowerCase()
+        .includes(letter)
+      );
 }
 
-console.log(mutation(['"hello"', 'Hello']));
-console.log(mutation(['hello', 'hey']));
-console.log(mutation(['Alien', 'line']));
+console.log(mutation(["hello", "Hello"]));
+console.log(mutation(["hello", "hey"]));
+console.log(mutation(["Alien", "line"]));
 console.log(mutation(["Mary", "Aarmy"]));
 console.log(mutation(["floor", "for"]));

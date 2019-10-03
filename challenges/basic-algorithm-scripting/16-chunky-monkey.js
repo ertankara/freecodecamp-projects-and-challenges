@@ -3,18 +3,16 @@
  * second argument decides the length of sub arrays
  */
 
-function chunkArrayInGroups(mainArray, arrayLength) {
-  const newArr = [];
-  for (let i = 0; i < mainArray.length; i += arrayLength) {
-    const subArray = [];
-    for (let j = i; j < i + arrayLength; j++) {
-      if (mainArray[j] !== undefined) {
-        subArray.push(mainArray[j]);
-      }
-    }
-    newArr.push(subArray);
+function chunkArrayInGroups(arr, size) {
+  const containerArr = [];
+
+  let index = 0;
+  while (index < arr.length) {
+    containerArr.push(arr.slice(index, index + size))
+    index += size;
   }
-  return newArr;
+
+  return containerArr;
 }
 
 //console.log(chunkArrayInGroups(["a", "b", "c", "d"], 2));
