@@ -18,21 +18,6 @@ function truncateString(str, num) {
   }
 
   return newStr + "...";
-  // if (str.length <= num) {
-  //   return str;
-  // }
-
-  // let result = '';
-
-  // if (str.length > num && str.length <= 3) {
-  //   result = str.slice(0, num) + '...';
-  // }
-  // else if (str.length > num) {
-  //   let until = num - 3 < 0 ? num : num - 3;
-  //   result = str.slice(0, until) + '...';
-  // }
-
-  // return result;
 }
 
 
